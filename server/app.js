@@ -29,6 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '\\..\\client\\views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 
 
@@ -73,8 +74,9 @@ app.delete('/yourdalaal/:itemId', catchAsync(async (req, res) => {
     
     await Item.findByIdAndDelete(req.params.itemId)
     res.redirect('/yourdalaal')
-
+    
 }))
+
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('page not found', 404))
