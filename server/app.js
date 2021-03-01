@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const path = require('path');
 const methodOverride = require('method-override');
 const Item = require('./models/item')
-const ejsMate=require('ejs-mate')
+const ejsMate = require('ejs-mate')
+const catchAsync=require('./utilities/catchAsync')
 
 
 
@@ -35,47 +36,54 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/yourdalaal', async (req, res) => {
+app.get('/yourdalaal', catchAsync(async (req, res) => {
     const items =await Item.find({});
     // console.log(items);
     res.render('yourdalaal/index',{items})
-})
+}))
 
 app.get('/yourdalaal/new', (req, res) => {
     res.render('yourdalaal/new')
 })
 
-app.get('/yourdalaal/:itemId', async (req, res) => {
+app.get('/yourdalaal/:itemId', catchAsync(async (req, res) => {
     
     const item = await Item.findById(req.params.itemId);
     res.render('yourdalaal/show',{item});
-})
+}))
 
-app.get('/yourdalaal/:itemId/edit', async (req, res) => {
+app.get('/yourdalaal/:itemId/edit', catchAsync(async (req, res) => {
     const item=await Item.findById(req.params.itemId)
     res.render('yourdalaal/edit',{item});
-})
+}))
 
-app.post('/yourdalaal', async (req, res) => {
+app.post('/yourdalaal', catchAsync(async (req, res) => {
     const item = new Item(req.body);
     await item.save();
     res.redirect(`/yourdalaal/${item._id}`);
-})
+}))
 
-app.put('/yourdalaal/:itemId', async (req, res) => {
+app.put('/yourdalaal/:itemId', catchAsync(async (req, res) => {
     // console.log(...req.body);
     await Item.findByIdAndUpdate(req.params.itemId, { ...req.body })
     res.redirect(`/yourdalaal/${req.params.itemId}`)
-})
+}))
 
-app.delete('/yourdalaal/:itemId', async (req, res) => {
+app.delete('/yourdalaal/:itemId', catchAsync(async (req, res) => {
     
     await Item.findByIdAndDelete(req.params.itemId)
     res.redirect('/yourdalaal')
+    
+}))
 
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = "Something went wrong!" } = err;
+    // if(!err.message) err.message='Oh No, Something Went Wrong! :('
+    res.status(statusCode).render('error',{err})
 })
 
+const port = process.env.PORT || 3000;
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Serving on port 3000')
 })
