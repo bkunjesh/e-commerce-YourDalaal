@@ -73,8 +73,12 @@ app.delete('/yourdalaal/:itemId', catchAsync(async (req, res) => {
     
     await Item.findByIdAndDelete(req.params.itemId)
     res.redirect('/yourdalaal')
-    
+
 }))
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('page not found', 404))
+})
 
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Something went wrong!" } = err;
