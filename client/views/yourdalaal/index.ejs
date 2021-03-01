@@ -1,0 +1,24 @@
+<% layout('/layouts/boilerplate') %>
+
+
+    <div class="container-fluid m-2">
+
+        <div class="col-12 align-self-center">
+    
+            <div class="row justify-content-center">
+            
+            <% for(let item of items){ %>            
+                <div class="card m-2 " style="width: 18rem;">
+                    <img src="<%= item.description.photo %>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= item.name %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= item.description.price %> Rs.</h6>
+                        <p class="card-text"><%= item.description.desc %></p>
+                        <a href="/yourdalaal/<%= item._id %>" class="btn btn-primary">view product</a>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+
+        </div>
+    </div> 

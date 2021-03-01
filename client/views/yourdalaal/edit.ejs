@@ -1,0 +1,27 @@
+<% layout('/layouts/boilerplate') %>
+
+    <h1>Edit Item</h1>
+
+    <form action="/yourdalaal/<%=item._id%>?_method=PUT" method="POST">
+
+        <div>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="<%=item.name %> ">
+        </div>
+
+        <div>
+            <label for="category">Category</label>
+            <input type="text" name="description[category]" id="category" value="<%=item.description.category %> ">
+        </div>
+
+        <div>
+            <label for="price">price</label>
+            <input type="text" name="description[price]" id="price" value="<%=item.description.price %> ">
+        </div>
+
+        <button>Update Item</button>
+
+    </form>
+    <br>
+    <a href="/yourdalaal">yourdalaal</a>
+
