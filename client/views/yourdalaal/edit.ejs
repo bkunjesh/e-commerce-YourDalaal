@@ -2,26 +2,30 @@
 
     <h1>Edit Item</h1>
 
-    <form action="/yourdalaal/<%=item._id%>?_method=PUT" method="POST">
+    <!--  -->
 
-        <div>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="<%=item.name %> ">
+    <div class="row">
+        <div class="col-6">
+            <form action="/yourdalaal/<%=item._id%>?_method=PUT" method="POST">
+                <div class="mb-2">
+                    <label for="name" class="form-label">Product Title</label>
+                    <input type="text" name="name" class="form-control" value="<%=item.name %> " id="name">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="category">Category</label>
+                    <input class="form-control" type="text" name="description[category]" value="<%=item.description.category %> " id="category">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="price">price</label>
+                    <input class="form-control" type="text" name="description[price]" value="<%=item.description.price %>" id="price">
+                </div>
+                <div class="mb-2">
+                    <label for="photo" class="form-label">Image Url</label>
+                    <input type="text" name="description[photo]" class="form-control" value="<%=item.description.photo %>" id="photo">
+                </div>
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label for="category">Category</label>
-            <input type="text" name="description[category]" id="category" value="<%=item.description.category %> ">
-        </div>
-
-        <div>
-            <label for="price">price</label>
-            <input type="text" name="description[price]" id="price" value="<%=item.description.price %> ">
-        </div>
-
-        <button>Update Item</button>
-
-    </form>
-    <br>
-    <a href="/yourdalaal">yourdalaal</a>
-
+    </div>

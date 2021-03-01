@@ -42,9 +42,10 @@
             <p><%=item.description.desc %> </p>
             <p>Price: <%=item.description.price %> Rs. </p>
         </div>
-        <a class="m-2" href="/yourdalaal/<%= item._id %>/edit">Edit Item</a>
+        
+        <a class="btn btn-primary" href="/yourdalaal/<%= item._id %>/edit">Edit Item</a>
         <form action="/yourdalaal/<%= item._id %>?_method=DELETE " method="post" class="d-inline">
-            <button>Delete Item</button>
+            <button class="btn btn-danger">Delete Item</button>
         </form>
         <!-- <a href="/yourdalaal">YourDalaal</a> -->
     </div>
