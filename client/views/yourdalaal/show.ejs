@@ -13,7 +13,7 @@
             <div class="carousel-inner">
 
                 <div class="carousel-item active">
-                    <img src="<%=item.description.photo %>" class="d-block w-100 vh-50" alt="...">
+                    <img src="<%=product.description.images %>" class="d-block w-100 vh-50" alt="...">
                 </div>
                 <!-- <div class="carousel-item">
                     <img src="..." class="d-block w-100" alt="...">
@@ -36,16 +36,16 @@
 
     <div class="col-6 mb-3">
         <div>
-            <h2><%= item.name %> </h2>
+            <h2><%= product.name %> </h2>
             <hr>
-            <p>category: <%=item.description.category %> </p>
-            <p><%=item.description.desc %> </p>
-            <p>Price: <%=item.description.price %> Rs. </p>
+            <p>category: <%=product.description.category %> </p>
+            <p><%=product.description.desc %> </p>
+            <p>Price: <%=product.description.price %> Rs. </p>
         </div>
         
-        <a class="btn btn-primary" href="/yourdalaal/<%= item._id %>/edit">Edit Item</a>
-        <form action="/yourdalaal/<%= item._id %>?_method=DELETE " method="post" class="d-inline">
-            <button class="btn btn-danger">Delete Item</button>
+        <a class="btn btn-primary" href="/yourdalaal/<%= product._id %>/edit">Edit Product</a>
+        <form action="/yourdalaal/<%= product._id %>?_method=DELETE " method="post" class="d-inline">
+            <button class="btn btn-danger">Delete Product</button>
         </form>
         <!-- <a href="/yourdalaal">YourDalaal</a> -->
     </div>

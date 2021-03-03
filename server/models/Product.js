@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ItemSchema = mongoose.Schema({
+const ProductSchema = mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -14,7 +14,7 @@ const ItemSchema = mongoose.Schema({
             type: String,
             default: 'n/a'
         },
-        photo: {
+        images: {
             type: String,
             default: 'https://source.unsplash.com/collection/190727'
         },
@@ -34,4 +34,8 @@ const ItemSchema = mongoose.Schema({
 
 }, { timestamps: true })
 
-module.exports = mongoose.model('Item', ItemSchema);
+
+
+
+
+module.exports = mongoose.model('Product', ProductSchema);

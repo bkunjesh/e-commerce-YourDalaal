@@ -1,27 +1,27 @@
 <% layout('/layouts/boilerplate') %>
 
-    <h1>Edit Item</h1>
+    <h1>Edit Product</h1>
 
     <!--  -->
 
     <div class="row">
         <div class="col-6">
-            <form class="needs-validation" action="/yourdalaal/<%=item._id%>?_method=PUT" method="POST" novalidate>
+            <form class="needs-validation" action="/yourdalaal/<%=product._id%>?_method=PUT" method="POST" novalidate>
                 <div class="mb-2">
                     <label for="name" class="form-label">Product Title</label>
-                    <input type="text" name="name" class="form-control" value="<%=item.name %> " id="name" required>
+                    <input type="text" name="name" class="form-control" value="<%=product.name %> " id="name" required>
                 </div>
                 <div class="mb-2">
                     <label class="form-label" for="category">Category</label>
-                    <input class="form-control" type="text" name="description[category]" value="<%=item.description.category %> " id="category" required>
+                    <input class="form-control" type="text" name="description[category]" value="<%=product.description.category %> " id="category" required>
                 </div>
                 <div class="mb-2">
                     <label class="form-label" for="price">price</label>
-                    <input class="form-control" type="text" name="description[price]" value="<%=item.description.price %>" id="price" required>
+                    <input class="form-control" type="text" name="description[price]" value="<%=product.description.price %>" id="price" required>
                 </div>
                 <div class="mb-2">
-                    <label for="photo" class="form-label">Image Url</label>
-                    <input type="text" name="description[photo]" class="form-control" value="<%=item.description.photo %>" id="photo" required>
+                    <label for="images" class="form-label">Image Url</label>
+                    <input type="text" name="description[images]" class="form-control" value="<%=product.description.images %>" id="images" required>
                 </div>
                 <div class="mb-2">
                     <button type="submit" class="btn btn-primary">Update Product</button>
