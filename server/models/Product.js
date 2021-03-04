@@ -19,7 +19,7 @@ const ProductSchema = mongoose.Schema({
             default: 'https://source.unsplash.com/collection/190727'
         },
         price: {
-            type: String,
+            type: Number,
             default: '40000'
         },
         desc: {
