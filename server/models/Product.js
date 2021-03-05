@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const User = require('./user')
 
-const ProductSchema = mongoose.Schema({
+
+const ProductSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -27,9 +29,9 @@ const ProductSchema = mongoose.Schema({
             default: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam molestias numquam nulla blanditiis obcaecati itaque vero, eveniet similique nostrum suscipit."
         }
     },
-    ownerID: {
-        type: String,
-        // required: true
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
     }
 
 }, { timestamps: true })
