@@ -1,0 +1,44 @@
+<% layout('/layouts/boilerplate') %>
+
+    <h1>Register</h1>
+    <div class="container sm-5">
+        <form action="/register" method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="username">Username</label>
+                <input class="form-control" type="text" id="username" name="username" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" id="email" name="contact[email]" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="phoneNo">Phone number</label>
+                <input class="form-control" type="text" id="phoneNo" name="contact[phone]" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="collegeName">College Name</label>
+                <input class="form-control" type="text" id="collegeName" name="college[name]" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="city">city</label>
+                <input class="form-control" type="text" id="city" name="address[city]" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="state">State</label>
+                <input class="form-control" type="text" id="state" name="address[state]" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="password" required>
+                <div class="valid-feedback">looks good :)</div>
+            </div>
+            <button class="btn btn-success">Register</button>
+        </form>
+
+    </div>

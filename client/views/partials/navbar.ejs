@@ -16,6 +16,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/yourdalaal/new">Add New Product</a>
                 </li>
+                <% if(!currentUser){ %>
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+                    <% }else{ %>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <% } %>
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

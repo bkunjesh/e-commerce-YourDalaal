@@ -1,5 +1,6 @@
 const express = require('express');
 const Product = require('../models/Product')
+const User = require('../models/user')
 const catchAsync=require('../utilities/catchAsync')
 const ExpressError=require('../utilities/ExpressError')
 
