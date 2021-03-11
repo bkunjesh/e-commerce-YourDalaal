@@ -37,16 +37,24 @@
     <div class="col-6 mb-3">
         <div>
             <h2><%= product.name %> </h2>
+            <h6 class="mb-2 text-muted">
+                by
+                <a href="/yourdalaal/user/<%=product.owner.username %> "><%=product.owner.username %></a>
+            </h6>
             <hr>
             <p>category: <%=product.description.category %> </p>
             <p><%=product.description.desc %> </p>
             <p>Price: <%=product.description.price %> Rs. </p>
         </div>
         
-        <a class="btn btn-primary" href="/yourdalaal/<%= product._id %>/edit">Edit Product</a>
-        <form action="/yourdalaal/<%= product._id %>?_method=DELETE " method="post" class="d-inline">
-            <button class="btn btn-danger">Delete Product</button>
-        </form>
+        <% if(currentUser&&product.owner.equals(currentUser._id)){ %>
+            
+            <a class="btn btn-primary" href="/yourdalaal/<%= product._id %>/edit">Edit Product</a>
+            <form action="/yourdalaal/<%= product._id %>?_method=DELETE " method="post" class="d-inline">
+                <button class="btn btn-danger">Delete Product</button>
+            </form>
+
+        <% } %> 
         <!-- <a href="/yourdalaal">YourDalaal</a> -->
     </div>
 

@@ -1,0 +1,102 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col col-md-12 col-lg-8 col-xl-8 col-xll-8 offset-lg-1 offset-xl-2 offset-xll-2">
+            <div class="card border-dark mb-3" >
+                <div class="card-body text-dark">
+                    <div class="row">
+                        <div class="col-8 ">
+                            <h2 class="card-title">
+                            <%=user.username %>
+                            </h2>
+
+                            <ul>
+                                <li>Email: <%=user.contact.email %>
+                                </li>
+                                <li>Phone: <%=user.contact.phone %>
+                                </li>
+                                <li>Collge: <%=user.college.name %>
+                                </li>
+                                <li>Address: <%=user.college.address.city %>, <%=user.college.address.state %>
+                                </li>
+                                <li>Total Product: <%= user.products.length %>
+                                </li>
+                                
+                            </ul>
+                            
+                        </div>
+                        <div class="col-3 offset-1">
+                            <img src="https://source.unsplash.com/weekly?person" class="img-thumbnail rounded float-end" alt="...">
+                        </div>
+                    </div>              
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3 ">
+        
+        <div class="col col-md-12 col-lg-8 col-xl-8 col-xll-8 offset-lg-1 offset-xl-2 offset-xll-2">
+            <h4>Listed Products</h4>
+
+            <div class="card border-dark">
+                <ul class="list-group list-group-flush">
+
+                    <% for(let product of user.products){ %> 
+
+                        <div class="card " >
+                            <div class="row g-0">
+
+                                <div class="col-1 ">
+                                    <img src="<%=product.description.images%> " class="img-thumbnail rounded " alt="...">
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="card-body">
+                                        <a href="/yourdalaal/<%=product._id %>"><h6 class="card-title"><%=product.name %></h6></a>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="card-body">
+                                        <p class="card-text"><small class="text-muted"><%=product.description.price %> Rs.</small></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="card-body">
+                                        <% if(product.owner.equals(currentUser._id)){ %>
+                                            <a class="btn btn-primary" href="/yourdalaal/<%= product._id %>/edit">Edit</a>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="card-body">
+                                        <% if(product.owner.equals(currentUser._id)){ %>
+                                            <form action="/yourdalaal/<%= product._id %>?_method=DELETE " method="post" >
+                                                <button class="btn btn-danger">Delete</button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    <% } %> 
+                    
+                </ul>
+            </div>
+
+            
+        </div>
+        
+        
+    </div>
+
+
+
+</div>
+

@@ -11,12 +11,13 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const { isLoggedIn,isAuthor }=require('./middleware/middleware');
 
 
 
 const userRoutes = require('./routes/users');
 const yourDalaalRoutes=require('./routes/yourdalaal')
-
+const profileRoutes=require('./routes/userProfile')
 
 
 
@@ -83,6 +84,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/', userRoutes);
+
+app.use('/yourdalaal/user', isLoggedIn, profileRoutes);
 
 app.use('/yourdalaal', yourDalaalRoutes);
 

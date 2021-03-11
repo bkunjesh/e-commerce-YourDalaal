@@ -27,7 +27,8 @@ router.get('/new',isLoggedIn, (req, res) => {
 
 router.get('/:productId', catchAsync(async (req, res) => {
     
-    const product = await Product.findById(req.params.productId);
+    const product = await Product.findById(req.params.productId).populate('owner');
+    // console.log(product)
     
     if (!product)
     {
