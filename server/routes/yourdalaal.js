@@ -42,6 +42,7 @@ router.get('/:productId', catchAsync(async (req, res) => {
 
 router.get('/:productId/edit',isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const product = await Product.findById(req.params.productId)
+    console.log(product);
     if (!product)
     {
         req.flash('error', 'cant find product.');

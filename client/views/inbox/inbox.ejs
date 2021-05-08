@@ -1,0 +1,38 @@
+<% layout('/layouts/boilerplate') %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<input type="hidden" value="<%= receiverID %>" id="receiverID" name="receiverID" >
+<div id="chat-container">
+    <div id="search-container">
+        <a href="/yourdalaal/inbox" >
+            <header><strong>Inbox</strong></header>
+        </a>
+    </div>
+    
+    <div id="conversation-list">
+    </div>
+
+    <div id="chat-title">
+    </div>
+
+    <% if(receiverID ===''){ %> 
+            <div class="text-muted justify-content-center" id="chat-message-list" style="margin: 30px;">
+                <p><strong>Select a Chat to Start Messaging</strong></p>
+            </div>
+    <% }else{ %> 
+            <div id="chat-message-list">
+            </div>
+
+                <div id="chat-form" >
+                    <input type="text" name="message" placeholder="type a message" id="message-text"/>
+                    <button id="send_message">
+                        <img src="https://img.icons8.com/fluent/48/000000/filled-sent.png" alt="Add Attachment" />
+                    </button>
+                </div>
+    <% } %> 
+</div>
+
+<script src="/Javascript/inbox.js"></script>
+<link rel="stylesheet" href="/stylesheet/inbox.css">

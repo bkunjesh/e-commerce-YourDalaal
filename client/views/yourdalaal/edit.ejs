@@ -2,8 +2,6 @@
 
     <h1>Edit Product</h1>
 
-    <!--  -->
-
     <div class="row">
         <div class="col-6">
             <form class="needs-validation" action="/yourdalaal/<%=product._id%>?_method=PUT" method="POST" novalidate>
@@ -22,6 +20,13 @@
                 <div class="mb-2">
                     <label for="images" class="form-label">Image Url</label>
                     <input type="text" name="description[images]" class="form-control" value="<%=product.description.images %>" id="images" required>
+                </div>
+                <div class="mb-2">
+                    <label for="Description" class="form-label">Description</label>
+                    <textarea type="text" name="description[desc]" class="form-control" id="Description" required><%=product.description.desc%></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-2">
                     <button type="submit" class="btn btn-primary">Update Product</button>

@@ -29,14 +29,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/register">Register</a>
                     </li>
-                    <% }else{ %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/yourdalaal/user/<%= currentUser.username %> ">
-                                <%= currentUser.username %>
+                    <% }else{ %>                        
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                hey,<%= currentUser.username %>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
+
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                
+                                <li><a class="dropdown-item" href="/yourdalaal/user/<%= currentUser.username %> "><%= currentUser.username %></a></li>
+                                
+                                <li><a class="dropdown-item"  href="/yourdalaal/inbox">Inbox</a></li>
+
+                                <li><a class="dropdown-item"  href="/logout">Logout</a></li>
+                            </ul>
+
                         </li>
             
                         <% } %>

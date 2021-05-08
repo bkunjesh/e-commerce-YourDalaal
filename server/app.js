@@ -1,4 +1,5 @@
 const express = require('express');
+app = express();
 const mongoose = require('mongoose')
 const path = require('path');
 const methodOverride = require('method-override');
@@ -12,12 +13,22 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const { isLoggedIn,isAuthor }=require('./middleware/middleware');
+const port = process.env.PORT || 3000;
+
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer);
+httpServer.listen(port);
+
+
+
+
 
 
 
 const userRoutes = require('./routes/users');
 const yourDalaalRoutes=require('./routes/yourdalaal')
-const profileRoutes=require('./routes/userProfile')
+const profileRoutes = require('./routes/userProfile')
+
 
 
 
@@ -36,26 +47,25 @@ db.once("open", () => {
 
 
 
-app = express();
-
-
 
 console.log(__dirname);
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '\\..\\client\\views'))
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
+
 
 
 const sessionConfig = {
     secret: 'thisissecret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
 }
@@ -71,11 +81,24 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
+    // console.log(req.user);
     res.locals.currentUser = req.user;
-    console.log(req.user);
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
 
+    next();
+})
+
+io.on('connection', (socket) => {
+    //https://stackoverflow.com/questions/17476294/how-to-send-a-message-to-a-particular-client-with-socket-io
+    socket.on('join', function (data) {
+        socket.join(data.id);
+    })
+    
+});
+
+app.use((req, res, next) => {
+    req.io = io;
     next();
 })
 
@@ -83,10 +106,11 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
+const inboxRoutes = require('./routes/inbox');
+
 app.use('/', userRoutes);
-
 app.use('/yourdalaal/user', isLoggedIn, profileRoutes);
-
+app.use('/yourdalaal/inbox', isLoggedIn, inboxRoutes);
 app.use('/yourdalaal', yourDalaalRoutes);
 
 
@@ -105,8 +129,11 @@ app.use((err, req, res, next) => {
 
 
 
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log('Serving on port 3000')
-})
+
+//Feature Left
+// -> option to upload product and profile image
+// -> searching item/category
+// -> time stamp in chatting 
+// -> read recipt
+// -> online/offline status

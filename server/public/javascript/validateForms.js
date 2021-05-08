@@ -3,7 +3,7 @@
     'use strict'
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        console.log("reach to validation")
+        // console.log("reach to validation")
     var forms = document.querySelectorAll('.needs-validation')
 
     // Loop over them and prevent submission
