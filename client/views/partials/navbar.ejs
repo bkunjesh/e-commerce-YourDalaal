@@ -11,16 +11,16 @@
                     <a class="nav-link active" aria-current="page" href="/yourdalaal">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/yourdalaal">Products</a>
+                    <a class="nav-link" href="/yourdalaal">Buy Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/yourdalaal/new">Add New Product</a>
+                    <a class="nav-link" href="/yourdalaal/new">Sell Product</a>
                 </li>
             </ul>
-            <form class="d-flex me-5">
+            <!-- <form class="d-flex me-5">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success " type="submit">Search</button>
-            </form>
+            </form> -->
             <ul class="navbar-nav  mb-2 mb-lg-0">
                 <% if(!currentUser){ %>
                     <li class="nav-item">
@@ -34,7 +34,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                hey,<%= currentUser.username %>
+                                Hey,<%= currentUser.username %>
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

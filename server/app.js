@@ -5,6 +5,8 @@ if (process.env.NODE_ENV !== "production")
 
 const express = require('express');
 app = express();
+const session = require('express-session');
+const MongoDBStore = require("connect-mongo");
 const mongoose = require('mongoose')
 const path = require('path');
 const methodOverride = require('method-override');
@@ -12,12 +14,12 @@ const Product = require('./models/Product')
 const ejsMate = require('ejs-mate')
 const catchAsync=require('./utilities/catchAsync')
 const ExpressError = require('./utilities/ExpressError')
-const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const { isLoggedIn,isAuthor }=require('./middleware/middleware');
+const { isLoggedIn, isAuthor } = require('./middleware/middleware');
+// const { MongoStore } = require('connect-mongo');
 const port = process.env.PORT || 3000;
 
 const httpServer = require("http").createServer(app);
@@ -35,9 +37,9 @@ const yourDalaalRoutes=require('./routes/yourdalaal')
 const profileRoutes = require('./routes/userProfile')
 
 
-
-
-mongoose.connect('mongodb://localhost:27017/your-dalaal', {
+const dburl = process.env.DB_URL||'mongodb://localhost:27017/your-dalaal';
+// mongodb://localhost:27017/your-dalaal
+mongoose.connect(dburl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -51,25 +53,37 @@ db.once("open", () => {
 })
 
 
-
-
 console.log(__dirname);
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '\\..\\client\\views'))
+app.set('views', path.join(__dirname, '\\..\\client\\views')) 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
+const secret = process.env.SECRET||'thisissecret';
+
+const store = MongoDBStore.create({
+    mongoUrl: dburl,
+    secret: secret,
+    touchAfter: 24 * 60 * 60,
+});
+store.on("error", function (e) {
+    console.log("session store error",e)
+})
+
 
 const sessionConfig = {
-    secret: 'thisissecret',
+    store,
+    name:'session',
+    secret: secret,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure:true,
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
