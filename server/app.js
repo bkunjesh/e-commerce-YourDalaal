@@ -122,7 +122,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-    res.render('home');
+    res.redirect('/yourdalaal');
 })
 
 const inboxRoutes = require('./routes/inbox');
