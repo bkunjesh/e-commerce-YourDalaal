@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <h5 class="card-title"><%= product.name %></h5>
                         <h6 class="card-subtitle mb-2 text-muted"><%= product.description.price %> Rs.</h6>
-                        <p class="card-text"><%= product.description.desc %></p>
+                        <p class="card-text"><%= product.description.desc.substring(0,Math.min(100,product.description.desc.length)) %>..</p>
                         <a href="/yourdalaal/<%= product._id %>" class="btn btn-primary">view product</a>
                     </div>
                 </div>
