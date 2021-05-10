@@ -6,7 +6,7 @@ const receiverID = document.querySelector('#receiverID').value;
 const send_message = document.querySelector('#send_message');
 var chatID;
 var currentUser;
-
+var currentReceiver;
 function conversationList()
 {
     axios.get('/yourdalaal/inbox/getlist',{headers:{"Content-Type" : "application/json"}})
@@ -30,11 +30,12 @@ function conversationList()
                 if (allChats.messages.length > 0)
                     var recent_message = allChats.messages[allChats.messages.length - 1].body;
                 else var recent_message = "";
+                const userProfileImage = (receiver.profileImage) ? receiver.profileImage.url : 'https:img.icons8.com/metro/26/000000/user-male.png';
                 conversationlist.innerHTML +=
                     `<div style="{text-decoration: none}">
                         <a href="/yourdalaal/inbox/${receiver._id}" >
                             <div class="conversation">
-                                <img src="https://img.icons8.com/metro/26/000000/user-male.png" alt="Kim O'Neil" />
+                                <img src=${userProfileImage} />
                                 <div class="title-text">${receiver.username}</div>
                                 <div class="created-date">${updatedDate}</div>
                                 <div class="conversation-message">
@@ -47,6 +48,7 @@ function conversationList()
                 
                 if (receiver._id.toString() === receiverID)
                 {
+                    currentReceiver = receiver;
                     chatID = allChats._id;
                     chat_list.innerHTML +=
                     `
@@ -62,7 +64,7 @@ function conversationList()
                             `
                                 <div class="message-row other-message">
                                     <div class="message-content">
-                                        <img src="https://img.icons8.com/metro/26/000000/user-male.png" alt="${receiver.username}" />
+                                        <img src=${userProfileImage} alt="${receiver.username}" />
                                         <div class="message-text">
                                             ${message.body}
                                         </div>
@@ -130,11 +132,12 @@ if (send_message)
 
 socket.on('message', function (data) {
     if (receiverID === data.senderID.toString()) {
+        const userProfileImage = (currentReceiver&&currentReceiver.profileImage) ? currentReceiver.profileImage.url : 'https:img.icons8.com/metro/26/000000/user-male.png';
         chat_message_list.innerHTML +=
             `
                 <div class="message-row other-message">
                     <div class="message-content">
-                        <img src="https://img.icons8.com/metro/26/000000/user-male.png" />
+                        <img src=${userProfileImage} />
                         <div class="message-text">
                             ${data.message_text}
                         </div>

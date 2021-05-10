@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema({
         },
         required: false,
     },
+    profileImage: {
+        url: String,
+        filename: String,
+    },
     products: [
         {
             type: mongoose.Schema.Types.ObjectId,

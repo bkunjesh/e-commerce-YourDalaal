@@ -2,7 +2,7 @@
 
     <h1>Register</h1>
     <div class="container sm-5">
-        <form action="/register" method="POST" class="needs-validation" novalidate>
+        <form action="/register" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="mb-3">
                 <label class="form-label" for="username">Username</label>
                 <input class="form-control" type="text" id="username" name="username" required>
@@ -37,6 +37,9 @@
                 <label class="form-label" for="password">Password</label>
                 <input class="form-control" type="password" id="password" name="password" required>
                 <div class="valid-feedback">looks good :)</div>
+            </div>
+            <div class="mb-2">
+                <input type="file" name="image" id="image" >
             </div>
             <button class="btn btn-success">Register</button>
         </form>

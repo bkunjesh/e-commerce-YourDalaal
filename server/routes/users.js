@@ -4,6 +4,11 @@ const catchAsync=require('../utilities/catchAsync')
 const ExpressError=require('../utilities/ExpressError')
 const User = require('../models/user')
 const passport = require('passport');
+const multer = require('multer');
+const { storage } = require('../cloudinary/index.js');
+// const upload=multer({dest:'uploads/'}) 
+const upload = multer({storage:storage});
+const { cloudinary } = require("../cloudinary/index")
 
 const router = express.Router({mergeParams:true});
 
@@ -12,12 +17,14 @@ router.get('/register', (req, res) => {
     res.render('users/register');
 })
 
-router.post('/register', catchAsync(async (req, res, next) => {
+router.post('/register',upload.single('image'), catchAsync(async (req, res, next) => {
     try {
         const { contact, username, password,college, address } = req.body;
-        
         const user = new User({ username, contact, college });
         user.college.address = address;
+        user.profileImage.url = req.file.path;
+        user.profileImage.filename = req.file.filename;
+
         
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {

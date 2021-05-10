@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== "production")
+{
+    require('dotenv').config();
+}
+
 const express = require('express');
 app = express();
 const mongoose = require('mongoose')
@@ -132,8 +137,9 @@ app.use((err, req, res, next) => {
 
 
 //Feature Left
-// -> option to upload product and profile image
+// -> option to upload product and profile image -done
 // -> searching item/category
 // -> time stamp in chatting 
 // -> read recipt
 // -> online/offline status
+// -> incoming message notification

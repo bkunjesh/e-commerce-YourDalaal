@@ -1,37 +1,37 @@
 <% layout('/layouts/boilerplate') %>
+<style>
+    /* https://www.w3schools.com/howto/howto_css_thumbnail.asp */
+    .image {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 200px;
+        max-height: 1000px;
+    }
+
+</style>
 <div class="row">
     <div class="col-6 mb-3">
 
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button> -->
-                
-            </div>
+        <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-
-                <div class="carousel-item active">
-                    <img src="<%=product.description.images %>" class="d-block w-100 vh-50" alt="...">
-                </div>
-                <!-- <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div> -->
-                
+                <% product.description.images.forEach((img,i)=>{%>
+                    <div class="carousel-item <%= i===0?'active':'' %>">
+                        <img src="<%=img.url %>" class="d-block w-100 image" alt="">
+                    </div>
+                <% }) %> 
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
+            <% if(product.description.images.length>1){ %> 
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselControls" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
+            <% } %> 
         </div>
-
     </div>
 
     <div class="col-6 mb-3">

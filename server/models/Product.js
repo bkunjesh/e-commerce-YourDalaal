@@ -16,10 +16,12 @@ const ProductSchema = new mongoose.Schema({
             type: String,
             default: 'n/a'
         },
-        images: {
-            type: String,
-            default: 'https://source.unsplash.com/collection/190727'
-        },
+        images: [
+            {
+                url: String,
+                filename:String
+            }
+        ],
         price: {
             type: Number,
             default: '40000'

@@ -3,8 +3,12 @@ const Product = require('../models/Product')
 const User = require('../models/user')
 const catchAsync=require('../utilities/catchAsync')
 const ExpressError=require('../utilities/ExpressError')
-const { isLoggedIn,isAuthor }=require('../middleware/middleware');
-
+const { isLoggedIn, isAuthor } = require('../middleware/middleware');
+const multer = require('multer');
+const { storage } = require('../cloudinary/index.js');
+// const upload=multer({dest:'uploads/'}) 
+const upload = multer({storage:storage});
+const { cloudinary }=require("../cloudinary/index")
 const router = express.Router({mergeParams:true});
 
 
@@ -28,8 +32,6 @@ router.get('/new',isLoggedIn, (req, res) => {
 router.get('/:productId', catchAsync(async (req, res) => {
     
     const product = await Product.findById(req.params.productId).populate('owner');
-    // console.log(product)
-    
     if (!product)
     {
         req.flash('error', 'cant find product.');
@@ -42,7 +44,6 @@ router.get('/:productId', catchAsync(async (req, res) => {
 
 router.get('/:productId/edit',isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const product = await Product.findById(req.params.productId)
-    console.log(product);
     if (!product)
     {
         req.flash('error', 'cant find product.');
@@ -52,13 +53,15 @@ router.get('/:productId/edit',isLoggedIn, isAuthor, catchAsync(async (req, res) 
 }))
 
 
-
-router.post('/',isLoggedIn, catchAsync(async (req, res) => {
+router.post('/',isLoggedIn, upload.array('image'), catchAsync(async (req, res) => {
     
     const user = await User.findById(req.user._id);
-    
+
     const product = new Product(req.body);
-    product.owner = user
+    product.owner = user;
+    product.description.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
+
+
     user.products.push(product)
     
     await product.save();
@@ -68,12 +71,40 @@ router.post('/',isLoggedIn, catchAsync(async (req, res) => {
     res.redirect(`/yourdalaal/${product._id}`);
 }))
 
+router.put('/:productId', isLoggedIn, isAuthor, upload.array('image'), catchAsync(async (req, res) => {
 
+    const more_img = req.files.map(f => ({ url: f.path, filename: f.filename }));
 
-router.put('/:productId',isLoggedIn, isAuthor, catchAsync(async (req, res) => {
-    await Product.findByIdAndUpdate(req.params.productId, { ...req.body })
+    const product = await Product.findByIdAndUpdate(req.params.productId, {
+        name: req.body.name,
+        "description.category": req.body.description.category,
+        "description.price": req.body.description.price,
+        "description.desc": req.body.description.desc,
+        $push: {
+            "description.images": {
+                $each:more_img
+            }
+        },
+    });
+
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages)
+        {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await product.updateOne({
+            $pull: {
+                "description.images": {
+                    filename: {
+                        $in: req.body.deleteImages
+                    }
+                }
+            }
+        });
+    }
+
     req.flash('success', 'product successfuly updated.');
-    res.redirect(`/yourdalaal/${req.params.productId}`)
+    res.redirect(`/yourdalaal/${req.params.productId}`);
 }))
 
 
@@ -83,7 +114,11 @@ router.delete('/:productId',isLoggedIn,isAuthor, catchAsync(async (req, res) => 
     
     await User.findByIdAndUpdate(req.user._id, { $pull: { products: productId } });    
     
-    await Product.findByIdAndDelete(req.params.productId)
+    var product = await Product.findByIdAndDelete(req.params.productId)
+    for (let img of product.description.images)
+    {
+        await cloudinary.uploader.destroy(img.filename);
+    }
     
     req.flash('success', 'product deleted.');
     res.redirect('/yourdalaal')

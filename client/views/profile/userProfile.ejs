@@ -1,5 +1,22 @@
 <% layout('/layouts/boilerplate') %>
+<style>
+    /* https://www.w3schools.com/howto/howto_css_thumbnail.asp */
+    .image {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 100px;
+        height: 100px;
+    }
+    .profileImage {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 200px;
+        height: 200px;
+    }
 
+</style>
 <div class="container">
     <div class="row mb-3">
         <div class="col col-md-12 col-lg-8 col-xl-8 col-xll-8 offset-lg-1 offset-xl-2 offset-xll-2">
@@ -29,7 +46,7 @@
                             
                         </div>
                         <div class="col-3 offset-1">
-                            <img src="https://source.unsplash.com/weekly?person" class="img-thumbnail rounded float-end" alt="...">
+                            <img src="<%= (user.profileImage!=={})? user.profileImage.url:'https://i.stack.imgur.com/y9DpT.jpg'%>" class="img-thumbnail rounded float-end profileImage" alt="...">
                         </div>
                     </div>              
                 </div>
@@ -53,7 +70,7 @@
                                 <div class="row g-0">
 
                                     <div class="col-1 ">
-                                        <img src="<%=product.description.images%> " class="img-thumbnail rounded " alt="...">
+                                        <img src="<%=(product.description.images.length>0)? product.description.images[0].url:'https://i.stack.imgur.com/y9DpT.jpg' %> " class="img-thumbnail rounded image" alt="...">
                                     </div>
 
                                     <div class="col-3">
@@ -108,4 +125,5 @@
 
 
 </div>
+
 

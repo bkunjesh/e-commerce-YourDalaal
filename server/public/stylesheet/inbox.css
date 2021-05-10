@@ -220,6 +220,10 @@ body {
 .message-row img {
     border-radius: 100%;
     grid-row: span 2;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    border: 0.5px solid;
 }
 
 .message-time {

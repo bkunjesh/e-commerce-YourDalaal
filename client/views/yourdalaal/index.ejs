@@ -1,5 +1,19 @@
 <% layout('/layouts/boilerplate') %>
-
+<style>
+    /* https://www.w3schools.com/howto/howto_css_thumbnail.asp */
+    .image {
+        
+        padding: 5px;
+        max-width: 300px;
+        max-height: 600px;
+        
+    }
+    .top-image{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
 
     <div class="container-fluid m-2">
 
@@ -9,7 +23,10 @@
             
             <% for(let product of products){ %>            
                 <div class="card m-2 " style="width: 18rem;">
-                    <img src="<%= product.description.images %>" class="card-img-top" alt="...">
+                    <div class="top-image">
+                        <img src="<%= (product.description.images.length>0)? product.description.images[0].url:'https://i.stack.imgur.com/y9DpT.jpg' %>" class="card-img-top image" alt="...">
+                    </div>
+                    
                     <div class="card-body">
                         <h5 class="card-title"><%= product.name %></h5>
                         <h6 class="card-subtitle mb-2 text-muted"><%= product.description.price %> Rs.</h6>

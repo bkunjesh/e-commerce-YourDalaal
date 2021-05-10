@@ -1,10 +1,23 @@
 <% layout('/layouts/boilerplate') %>
+<style>
+    /* https://www.w3schools.com/howto/howto_css_thumbnail.asp */
+    .image-thumbnail {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 100px;
+        height: 100px;
+    }
+    .image-thumbnail:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+</style>
 
     <h1>Edit Product</h1>
 
     <div class="row">
         <div class="col-6">
-            <form class="needs-validation" action="/yourdalaal/<%=product._id%>?_method=PUT" method="POST" novalidate>
+            <form class="needs-validation" action="/yourdalaal/<%=product._id%>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate>
                 <div class="mb-2">
                     <label for="name" class="form-label">Product Title</label>
                     <input type="text" name="name" class="form-control" value="<%=product.name %> " id="name" required>
@@ -18,8 +31,16 @@
                     <input class="form-control" type="text" name="description[price]" value="<%=product.description.price %>" id="price" required>
                 </div>
                 <div class="mb-2">
-                    <label for="images" class="form-label">Image Url</label>
-                    <input type="text" name="description[images]" class="form-control" value="<%=product.description.images %>" id="images" required>
+                    <input type="file" name="image" id="image" multiple>
+                </div>
+                <div class="mb-2">
+                    <% product.description.images.forEach(function(img,i){ %>
+                        <img src="<%= img.url %>" class="image-thumbnail" alt="">
+                        <div class="form-check-inline">
+                            <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value="<%=img.filename%>">
+                        </div>
+                        <label for="image-<%=i%>">Delete</label>
+                        <% }) %>
                 </div>
                 <div class="mb-2">
                     <label for="Description" class="form-label">Description</label>
