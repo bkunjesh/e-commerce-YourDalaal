@@ -18,7 +18,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const { isLoggedIn, isAuthor } = require('./middleware/middleware');
+const Chat = require("./models/chat");
+const { isLoggedIn, isAuthor, readAcknowledge } = require('./middleware/middleware');
 // const { MongoStore } = require('connect-mongo');
 const port = process.env.PORT || 3000;
 
@@ -35,9 +36,10 @@ httpServer.listen(port);
 const userRoutes = require('./routes/users');
 const yourDalaalRoutes=require('./routes/yourdalaal')
 const profileRoutes = require('./routes/userProfile')
-
+const inboxRoutes = require("./routes/inbox");
 
 const dburl = process.env.DB_URL||'mongodb://localhost:27017/your-dalaal';
+// const dburl ='mongodb://localhost:27017/your-dalaal';
 // mongodb://localhost:27017/your-dalaal
 mongoose.connect(dburl, {
     useNewUrlParser: true,
@@ -98,22 +100,42 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+var connecteduser = {};
+
 
 app.use((req, res, next) => {
     // console.log(req.user);
     res.locals.currentUser = req.user;
+    
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
 
     next();
 })
-
 io.on('connection', (socket) => {
     //https://stackoverflow.com/questions/17476294/how-to-send-a-message-to-a-particular-client-with-socket-io
     socket.on('join', function (data) {
+        let newUserId = data.id;
         socket.join(data.id);
+        connecteduser[newUserId] = socket.id;
+        // console.log(socket.id);
+        // console.log(socket.rooms);
+        // console.log(connecteduser);
+        io.sockets.emit("online", { newUserId, connecteduser });
     })
     
+    socket.on("disconnect", function () {
+        function getKeyByValue(object, value) {
+            return Object.keys(object).find((key) => object[key] === value);
+        }
+        let userid = getKeyByValue(connecteduser, socket.id);
+        delete connecteduser[userid]
+        // console.log("good bye", userid)
+        // console.log(connecteduser);
+        io.sockets.emit("offline", { connecteduser });
+    })
+
+    socket.on("readAcknowledge", readAcknowledge);
 });
 
 app.use((req, res, next) => {
@@ -125,7 +147,7 @@ app.get('/', (req, res) => {
     res.redirect('/yourdalaal');
 })
 
-const inboxRoutes = require('./routes/inbox');
+
 
 app.use('/', userRoutes);
 app.use('/yourdalaal/user', isLoggedIn, profileRoutes);
@@ -152,8 +174,11 @@ app.use((err, req, res, next) => {
 
 //Feature Left
 // -> option to upload product and profile image -done
+// -> date of message -done
+// -> time stamp in chatting  - done
+// -> end to end encryption
 // -> searching item/category
-// -> time stamp in chatting 
+// -> sending attachment 
 // -> read recipt
 // -> online/offline status
 // -> incoming message notification

@@ -22,8 +22,8 @@ router.post('/register',upload.single('image'), catchAsync(async (req, res, next
         const { contact, username, password,college, address } = req.body;
         const user = new User({ username, contact, college });
         user.college.address = address;
-        user.profileImage.url = req.file.path;
-        user.profileImage.filename = req.file.filename;
+        if(req.file) user.profileImage.url = req.file.path;
+        if(req.file) user.profileImage.filename = req.file.filename;
 
         
         const registeredUser = await User.register(user, password);

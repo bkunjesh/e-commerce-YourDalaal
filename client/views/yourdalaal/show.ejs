@@ -55,6 +55,12 @@
             </form>
 
         <% } %> 
+        <% if(currentUser&&!product.owner.equals(currentUser._id)){ %>
+            
+            <a class="btn btn-primary" href="/yourdalaal/inbox/<%= product.owner._id %>">Contact Seller</a>
+            <!-- -->
+
+        <% } %> 
         <!-- <a href="/yourdalaal">YourDalaal</a> -->
     </div>
 

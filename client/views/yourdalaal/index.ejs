@@ -13,6 +13,13 @@
         margin-left: auto;
         margin-right: auto;
     }
+    /* .products-container{
+        display: flex;
+        flex-direction: row;
+    }
+    .product{
+        min-width: 100px;
+    } */
 </style>
 
     <div class="container-fluid m-2">
@@ -20,9 +27,11 @@
         <div class="col-12 align-self-center">
     
             <div class="row justify-content-center">
+        <!-- <div class="products-container"> -->
             
             <% for(let product of products){ %>            
-                <div class="card m-2 " style="width: 18rem;">
+                <div class="product card m-2 " style="width: 18rem;">
+                <!-- <div class="product card m-2 " > -->
                     <div class="top-image">
                         <img src="<%= (product.description.images.length>0)? product.description.images[0].url:'https://i.stack.imgur.com/y9DpT.jpg' %>" class="card-img-top image" alt="...">
                     </div>
@@ -39,3 +48,5 @@
 
         </div>
     </div> 
+
+        <!-- </div> -->

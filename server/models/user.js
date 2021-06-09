@@ -7,13 +7,13 @@ const UserSchema = new mongoose.Schema({
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
         },
         phone: {
             type: String,
             // min: 10,
             // max:10
-        }
+        },
     },
     college: {
         name: {
@@ -25,27 +25,33 @@ const UserSchema = new mongoose.Schema({
             },
             state: {
                 type: String,
-            }
+            },
         },
         required: false,
     },
     profileImage: {
-        url: String,
-        filename: String,
+        url: {
+            type: String,
+            default: "https://img.icons8.com/metro/26/000000/user-male.png",
+        },
+        filename: {
+            type: String,
+            default:"",
+        },
     },
     products: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:'Product'
-        }
+            ref: "Product",
+        },
     ],
     inbox: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:'Chat'
-        }
-    ]
-})
+            ref: "Chat",
+        },
+    ],
+});
 
 UserSchema.plugin(passportLocalMongoose);
 

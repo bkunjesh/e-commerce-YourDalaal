@@ -1,5 +1,6 @@
 const Product = require('../models/Product')
 const User = require('../models/user')
+const Chat = require('../models/chat')
 const catchAsync=require('../utilities/catchAsync')
 const ExpressError=require('../utilities/ExpressError')
 
@@ -21,3 +22,10 @@ module.exports.isAuthor = async (req, res, next) => {
     }
     next();
 }
+
+module.exports.readAcknowledge = async (readAcknowledge) => {
+    var chat = await Chat.findById({ _id: readAcknowledge.chatID });
+    chat.messages[chat.messages.length - 1].isRead = 1;
+    await chat.save();
+    return;
+};
