@@ -36,10 +36,10 @@ body {
     height: 80vh;
     margin-bottom: 10px;
     justify-content: center;
-    background: #FFF;
+    background: rgba(235, 232, 232, 0.109);
     border-radius: 10px;
     border: 1px solid;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.211);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.469);
 
 }
 
@@ -97,11 +97,11 @@ body {
     font-size: 0.8rem;
     /* border-bottom: 1px solid; */
     border-radius: 10px 0 0 0;
-    border: 0.01px solid rgba(32, 32, 32, 0.285);
+    border: 0.01px solid rgba(32, 32, 32, 0.489);
     margin:4px;
     padding: 10px 10px 10px 10px;
     text-decoration: none;
-    box-shadow: 5px 2px 5px rgba(0, 0, 0, 0.353);
+    box-shadow: 5px 2px 5px rgba(0, 0, 0, 0.489);
 }
 #conversation-list :last-child > .conversation {
     border-radius: 0px 0px 0px 10px;
@@ -110,7 +110,7 @@ body {
 
 .conversation.active,
 .conversation:hover {
-    background: #eee;
+    background: rgba(206, 205, 205, 0.489);
     margin:2px;
 }
 
@@ -128,7 +128,7 @@ body {
 
 .title-text {
     font-weight: bold;
-    color: rgba(0, 0, 0,0.75);
+    color: rgba(0, 0, 0, 0.898);
     padding-left: 5px;
     white-space: nowrap;
     overflow-x: hidden;
@@ -195,11 +195,12 @@ body {
 } */
 
 #chat-title{
-    background: rgba(247, 246, 246, 0.5);
+    /* background: rgba(247, 246, 246, 0.5); */
     margin-bottom: 5px;
 }
 #chat-form {
-    background: #eee;
+    background: rgba(235, 232, 232, 0.904);
+    
 }
 
 #chat-title {
@@ -212,8 +213,12 @@ body {
     font-size: 1.1rem;
     border-radius: 0 10px 0 0;
     box-shadow: 0 1px 3px -1px rgba(0,0,0,0.75);
-
+    
     padding: 0 20px;
+}
+#chat-title a {
+    text-decoration: none;
+    color:#111;
 }
 #online-status{
     grid-area: chat-title;
@@ -246,12 +251,11 @@ body {
     flex-direction: column;
     padding: 0 20px;
     overflow-y: scroll;
-    
 }
 #chat-message-list-date{
     display: grid;
     justify-content: center;
-    background: rgba(47, 47, 47, 0.251);
+    background: rgba(47, 47, 47, 0.17);
     border-radius: 10px 10px 10px 10px;
     border-width: 10px;
     margin-top: 5px;
@@ -303,10 +307,13 @@ body {
 }
 .message-time {
     font-size: 0.5rem;
-    color: #777;
+    
+    color: rgb(72, 72, 72);
 }
 .read-reciept{
+    font-weight:600;
     font-size: .6em;
+    
 }
 
 .message-text {
@@ -325,7 +332,8 @@ body {
 
 
 .other-message .message-text {
-    background: #eee;
+    background: rgba(235, 232, 232, 0.904);
+    /* background: #eee; */
     color: #111;
     border: 1px solid #ddd;
     border-radius: 14px 14px 14px 0;
