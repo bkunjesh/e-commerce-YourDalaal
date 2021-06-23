@@ -282,6 +282,7 @@ body {
     justify-items: end;
 }
 
+
 .other-message .message-content {
     grid-template-columns: 48px 1fr;
     grid-column-gap: 15px;
@@ -295,10 +296,17 @@ body {
     border-radius: 100%;
     border: 0.5px solid;
 }
-
+.you-message .message-status{
+    display: grid;
+    grid-template-columns: 1fr .2fr;
+    grid-gap: 5px;
+}
 .message-time {
     font-size: 0.5rem;
     color: #777;
+}
+.read-reciept{
+    font-size: .6em;
 }
 
 .message-text {
@@ -313,6 +321,8 @@ body {
     border: 1px solid #0048AA;
     border-radius: 14px 14px 0 14px;
 }
+
+
 
 .other-message .message-text {
     background: #eee;

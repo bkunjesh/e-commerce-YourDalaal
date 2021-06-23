@@ -55,20 +55,28 @@
                 <% for(let item of conversation){ %> 
                     <% if(item.message_date!=""&&date!=item.message_date){ date=item.message_date; %> 
                         <div id="chat-message-list-date">
-                            <span>
-                                <%= item.message_date %>
-                            </span>
+                            <span><%= item.message_date %></span>
                         </div>
                         
                     <% } %> 
-                    <div class="message-row <%=item.message_class%>">
-                        <div class="message-content">
+                    <div class="message-row <%=item.message_class%>" data-message-id="<%= item.message_id %>">
+                        <div class="message-content" >
                             <% var userProfileImage = (receiver.profileImage.url) ? receiver.profileImage.url : 'https:img.icons8.com/metro/26/000000/user-male.png';
                             if(item.message_class=="other-message"){%>
                                 <img src= <%=userProfileImage%> alt="<%=receiver.username%>" />
                             <%} %> 
                             <div class="message-text"><%=item.message_text%></div>
-                            <div class="message-time"><%=item.message_time%></div>
+                            <div class="message-status">
+                                <div class="message-time"><%=item.message_time%></div>
+                                <%if(item.message_class=='you-message'){%>
+                                    <%if(item.isRead){%>
+                                        <div class="read-reciept" >&#10003</div>
+                                    <%}else{%>
+                                        <div class="read-reciept" ></div>
+                                    <%}%>
+                                <%}%>
+                            </div>
+                            
                         </div>
                     </div>
                 <% } %> 
@@ -80,12 +88,15 @@
                         <img src="https://img.icons8.com/fluent/48/000000/filled-sent.png" alt="Add Attachment" />
                     </button>
                 </div>
+                
     <% } %> 
 </div>
 
 
 <script>
 {
+    // <audio id="audio" src="/media/tick.mp3" autoplay="false" hidden></audio>
+    //             <button id="playTickSound" hidden></button>
     var socket = io.connect();
     const conversationlist = document.querySelector('#conversation-list');
     const chat_list = document.querySelector('#chat-title');
@@ -111,20 +122,28 @@
                 
                 axios.post(`/yourdalaal/inbox/sendMessage`, data, { headers: { "Content-Type": "application/json" } })
                     .then((res) => {
+                        
                         let date_ = new Date();
                         let{date,time}= getUpdatedDate(date_);
+                        message_id=res.data.message_id;
+                        // console.log(res.data);
+                        checkForLatestDateUpdate(date);
+
                         chat_message_list.innerHTML +=
                             `
-                <div class="message-row you-message">
+                <div class="message-row you-message" data-message-id="${message_id}">
                     <div class="message-content">
                         <div class="message-text">${message_text}</div>
-                        <div class="message-time">${time}</div>
+                        <div class="message-status">
+                                <div class="message-time">${time}</div>
+                                <div class="read-reciept"></div>
+                        </div>
                     </div>
                 </div>    
             `
                         scrollDown();
                         document.querySelector('#message-text').value = '';
-
+                        
                         conversations = document.querySelectorAll(".conversation");
                         var node;
                         conversations.forEach((element) => {
@@ -143,9 +162,17 @@
 
                     })
                     .catch((err) => {
-                        console.log(err);
+                        console.log("error while sending message",err);
                     })
 
+            }
+        });
+        var input=document.querySelector('#message-text');
+        input.addEventListener("keyup", function (event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.ctrlKey&&event.keyCode === 13) {
+                event.preventDefault();
+                send_message.click();
             }
         });
     }
@@ -154,12 +181,14 @@
     socket.on('message', function (data) {
         if (receiverID === data.senderId.toString()) {
 
-            readAcknowledge = {chatID:chatID};
+            readAcknowledge = {chatID:chatID,message_id:data.message_id,receiverID: receiverID};
             socket.emit('readAcknowledge', readAcknowledge);
 
+            checkForLatestDateUpdate(data.message_date);
+            
             chat_message_list.innerHTML +=
                 `
-            <div class="message-row other-message">
+            <div class="message-row other-message" data-message-id="${data.message_id}">
                 <div class="message-content">
                     <img src=${data.profileImage} />
                     <div class="message-text">
@@ -175,7 +204,55 @@
         scrollDown();
     })
 
+    socket.on('readAcknowledge',(data)=>{
+        let messages=document.querySelectorAll(`[data-message-id]`)
+        messages.forEach((message) => {
+            if(message.dataset.messageId==data.message_id)
+            {
+                let readReceipt = message.querySelector('.message-content').querySelector('.message-status').querySelector('.read-reciept');
+                if(readReceipt) 
+                {
+                    readReceipt.innerHTML="&#10003";
+                    playTickSound();
+                }
+            }
+        });
+    })
+    socket.on('readAllAcknowledge',(data)=>{
+        if(chatID==data.chatID)
+        {
+            readReceipts=document.querySelectorAll('.read-reciept');
+            for(let i= readReceipts.length - 1;i>=0;i--)
+            {
+                if(chatID == data.chatID && readReceipts[i].innerHTML=='')
+                {
+                    readReceipts[i].innerHTML = "&#10003";
+                    playTickSound();
+                }
+                else i=0;
+            }
+        }
+    })
 
+    function checkForLatestDateUpdate(message_date){
+        chat_message_list_date = document.querySelectorAll('#chat-message-list-date')
+        if (chat_message_list_date) {
+            var lastChatDate = chat_message_list_date[chat_message_list_date.length - 1].childNodes[1];
+            
+        }
+        if ((!chat_message_list_date) || (lastChatDate.innerText !=message_date)) {
+            chat_message_list.innerHTML +=
+                `
+                <div id="chat-message-list-date">
+                            <span>
+                                ${message_date}
+                            </span>
+                </div>
+                `
+
+        }
+    }
+    
     function messageArrived(data)
     {
         conversations=document.querySelectorAll(".conversation");
@@ -318,6 +395,11 @@
                 }
             });
         }
+    }
+    function playTickSound(){
+        var audio = new Audio('/media/tick.mp3');
+        audio.volume=0.1;
+        audio.play();
     }
 
 }

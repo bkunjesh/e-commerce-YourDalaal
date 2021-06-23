@@ -19,7 +19,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const Chat = require("./models/chat");
-const { isLoggedIn, isAuthor, readAcknowledge } = require('./middleware/middleware');
+const { isLoggedIn, isAuthor } = require('./middleware/middleware');
+const { readAcknowledge } = require('./middleware/inbox');
 // const { MongoStore } = require('connect-mongo');
 const port = process.env.PORT || 3000;
 
@@ -94,7 +95,7 @@ app.use(session(sessionConfig))
 app.use(flash())
 
 app.use(passport.initialize()); 
-app.use(passport.session()); //this  should be come afte session
+app.use(passport.session()); //this  should be come after session
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -135,7 +136,14 @@ io.on('connection', (socket) => {
         io.sockets.emit("offline", { connecteduser });
     })
 
-    socket.on("readAcknowledge", readAcknowledge);
+    // socket.on("readAcknowledge", readAcknowledge);
+    socket.on("readAcknowledge", async (readAcknowledge) => {
+        var chat = await Chat.findById({ _id: readAcknowledge.chatID });
+        chat.messages[chat.messages.length - 1].isRead = 1;
+        await chat.save();
+        io.sockets.in(readAcknowledge.receiverID).emit("readAcknowledge", {message_id:readAcknowledge.message_id});
+        return;
+    });
 });
 
 app.use((req, res, next) => {
@@ -159,6 +167,7 @@ app.use('/yourdalaal', yourDalaalRoutes);
 
 
 app.all('*', (req, res, next) => {
+    // console.log("express error");
     next(new ExpressError('page not found', 404))
 })
 
@@ -173,12 +182,25 @@ app.use((err, req, res, next) => {
 
 
 //Feature Left
-// -> option to upload product and profile image -done
-// -> date of message -done
-// -> time stamp in chatting  - done
-// -> end to end encryption
-// -> searching item/category
-// -> sending attachment 
-// -> read recipt
-// -> online/offline status
+// ✔️ -> option to upload product and profile image -done
+// ✔️ -> date of message -done
+// ✔️ -> time stamp in chatting  - done
+// ✔️ -> online/offline status
+// ✔️ -> show inbox option to all in navigation bar.
+// ✔️ -> show contact seller opt. to all in product page.
+// ✔️ -> real time date change is not showing in chatting area.
+// -> end-to-end encryption.
+// -> sending attachment option.
 // -> incoming message notification
+// ✔️ -> read-receipt 
+// ✔️ -> press ctrl+enter to send message function.
+// -> link highlight in inbox.
+// -> search functionality.
+// -> category wise listing.
+// -> product suggestion in product page.
+// -> stick view product button of card at bottom of card in home page.
+// ✔️ -> organize code & add controller folder.
+// -> give warning while edit/update product
+// -> completely new upcoming message UI quite not looking good.
+// ✔️ -> completely new upcoming message is not showing date in conversation list
+// ✔️ -> play sound when receiver seen a message.
