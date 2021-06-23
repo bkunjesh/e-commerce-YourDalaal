@@ -1,20 +1,17 @@
-# e-commerce website-YourDalaal
+# YourDalaal: E-commerce webapp for second hand stuff
 
 
 click here: https://enigmatic-shore-78963.herokuapp.com/yourdalaal
 
-if you dont want to register, you can use 
-(
-  username: test1 ,
-  password: test1
-)
+#### If you dont want to register, you can use ( username: test1 , password: test1 )
 
 • A Platform which helps Students to Buy/Sell their Second Hand Stuff like books, Designing Equipment etc.<br>
 • Implemented Real Time Chatting Functionality With Seller Using MongoDb database.<br>
 • Website is fully featured with Authentication and Authorization.<br>
 
 
-### last commit update
+### Recent Major update:
+
 
 ###### Chat feature update:
 
@@ -29,11 +26,13 @@ if you dont want to register, you can use
 ✔️ - date updating in conversation list<br>
 ✔️ - server side scripting for messages(ejs file makeup)<br>
 ✔️ - online-offline emoji update in conversation-list<br>
-✔️ - organize code & add controller folder.<br>
 ✔️ - play sound when receiver seen a message.<br>
 ✔️ - press ctrl + enter to send message function.<br>
 ✔️ - real time date change in chatting area.<br>
 ✔️ - [bug fix] completely new upcoming message is not showing date in conversation list<br>
+
+###### Code Design/Pattern 
+✔️ - MVC design implemented ,organize code & add controller folder.<br>
 
 ###### Show page:
 
@@ -50,6 +49,5 @@ if you dont want to register, you can use
 ✔️ - removed unnecessary options<br>
 ✔️ - [update]show inbox option to all in navigation bar.<br>
 
-
-
+<br><br>Note: you can check comment section of commit inorder to get idea of changes in that corresponding update.
 
