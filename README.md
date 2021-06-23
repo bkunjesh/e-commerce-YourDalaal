@@ -14,33 +14,41 @@ if you dont want to register, you can use
 • Website is fully featured with Authentication and Authorization.<br>
 
 
-##### last commit update
+### last commit update
 
-Chat feature update:
+###### Chat feature update:
 
-> - online-offline status
-> - time/date of message implemented
-> - unread message count
-> - sorting conversation list
-> - real time update of incoming message
-> - real time sorting of conversational list
-> - changes in inbox CSS (card view & shadow)
-> - date updating in conversation list
-> - server side scripting for messages(ejs file makeup)
-> - online-offline emoji update in conversation-list
+✔️ - online-offline status <br>
+✔️ - time/date of message implemented<br>
+✔️ - unread message count<br>
+✔️ - read-receipt <br>
+✔️ - sorting conversation list<br>
+✔️ - real time update of incoming message<br>
+✔️ - real time sorting of conversational list<br>
+✔️ - changes in inbox CSS (card view & shadow)<br>
+✔️ - date updating in conversation list<br>
+✔️ - server side scripting for messages(ejs file makeup)<br>
+✔️ - online-offline emoji update in conversation-list<br>
+✔️ - organize code & add controller folder.<br>
+✔️ - play sound when receiver seen a message.<br>
+✔️ - press ctrl + enter to send message function.<br>
+✔️ - real time date change in chatting area.<br>
+✔️ - [bug fix] completely new upcoming message is not showing date in conversation list<br>
 
-Show page:
+###### Show page:
 
-> - contact seller option implemented
+✔️ - contact seller option implemented<br>
+✔️ - [update]show contact seller opt. to all in product page.<br>
 
-login/register
+###### login/register
 
-> - UI changes
+✔️ - UI changes<br>
 
-Navbar
+###### Navbar
 
-> - inbox option
-> - removed unnecessary options
+✔️ - inbox option in navbar<br>
+✔️ - removed unnecessary options<br>
+✔️ - [update]show inbox option to all in navigation bar.<br>
 
 
 
