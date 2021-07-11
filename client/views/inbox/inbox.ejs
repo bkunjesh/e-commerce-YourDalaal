@@ -3,6 +3,17 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <link rel="stylesheet" href="/stylesheet/inbox.css">
 
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/emojipicker/lib/css/emoji.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- 
+<script src="/emojipicker/lib/js/config.js"></script>
+<script src="/emojipicker/lib/js/util.js"></script>
+<script src="/emojipicker/lib/js/jquery.emojiarea.js"></script>
+<script src="/emojipicker/lib/js/emoji-picker.js"></script> -->
+
+
 <input type="hidden" value="<%= receiverID %>" id="receiverID" name="receiverID" >
 <input type="hidden" value="<%= userID %>" id="userID" name="userID" >
 <input type="hidden" value="<%= chatID %>" id="chatID" name="chatID" >
@@ -89,9 +100,12 @@
                     </div>
                 <% } %> 
             </div>
-
-                <div id="chat-form" >
-                    <input type="text" name="message" placeholder="type a message" id="message-text"/>
+                <div id="chat-form" >                    
+                    <div class="lead emoji-picker-container" id="input-container">
+                        
+                        <input type="textbox" data-emoji-input="unicode" class="form-control" id="message-text" placeholder="Type a message"
+                            data-emojiable="true"></input>
+                    </div>
                     <button id="send_message">
                         <img src="https://img.icons8.com/fluent/48/000000/filled-sent.png" alt="Add Attachment" />
                     </button>
@@ -99,6 +113,8 @@
                 
     <% } %> 
 </div>
+
+
 
 <script src="/javascript/inbox.js"></script>
 

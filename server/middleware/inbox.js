@@ -1,6 +1,7 @@
 
 module.exports.get_ConversationList_conversation= (user, receiverID)=> {
     user.inbox.sort(function (a, b) {
+        if (a.messages.length == 0 || b.messages.length == 0) return 0;
         return a.messages[a.messages.length-1].time > b.messages[b.messages.length-1].time ? -1 : a.messages[a.messages.length-1].time < b.messages[b.messages.length-1].time ? 1 : 0;
     })
     let conversationList = [];
@@ -118,7 +119,7 @@ getUpdatedDate = (date) => {
         date = "";
         return { date, time };
     }
-    time = getTime(date);
+    var time = getTime(date);
     date = isoFormatDMY(date);
     return { date, time };
 }

@@ -9,14 +9,42 @@ const userID = document.querySelector("#userID").value;
 
 showActiveChat();
 connectSocket();
-
 function connectSocket() {
     socket.emit("join", { id: userID });
 }
 
 if (send_message) {
-    send_message.addEventListener("click", async function () {
+    send_message.addEventListener("click", sendMessage);
+
+    var input = document.querySelector("#message-text");
+
+    input.addEventListener("keyup", (e) => {
+        if (e.ctrlKey && e.keyCode === 13) {
+            console.log("ctrl+enter");
+            e.preventDefault();
+            var send_message = document.querySelector(`#send_message`);
+            console.log(send_message);
+            
+            send_message.click();
+        }
+    })
+
+    // function onCntrEnterpress (e) {
+    //     if (e.ctrlKey && e.keyCode === 13) {
+    //         console.log("ctrl+enter");
+    //         e.preventDefault();
+    //         var send_message = document.querySelector(`#send_message`);
+    //         console.log(send_message);
+            
+    //         send_message.click();
+    //     }
+    // }
+    
+    
+    function sendMessage () {
+        
         const message_text = document.querySelector("#message-text").value;
+        // console.log("sendMessage clicked ",message_text);
         if (receiverID != "" && isvalidmessage(message_text)) {
             // let date=new Date();
             let data = {
@@ -47,8 +75,9 @@ if (send_message) {
                     </div>
                 </div>    
             `;
-                    scrollDown();
-                    document.querySelector("#message-text").value = "";
+            scrollDown();
+            // document.querySelector("#message-text").innerText = "";
+            document.querySelector("#message-text").value = "";
 
                     conversations = document.querySelectorAll(".conversation");
                     var node;
@@ -72,17 +101,10 @@ if (send_message) {
                     console.log("error while sending message", err);
                 });
         }
-    });
-    var input = document.querySelector("#message-text");
-    input.addEventListener("keyup", function (event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.ctrlKey && event.keyCode === 13) {
-            event.preventDefault();
-            send_message.click();
-        }
-    });
+    }
 }
-
+// let input = document.querySelector(`[data-type]`);
+// console.log(input);
 socket.on("message", function (data) {
     if (receiverID === data.senderId.toString()) {
         readAcknowledge = {
@@ -303,3 +325,31 @@ function playTickSound() {
     audio.volume = 0.1;
     audio.play();
 }
+
+// <input type="textbox" data-emoji-input="unicode" class="form-control" id="message-text" placeholder="Input field"
+//                             data-emojiable="true"></input>
+
+
+// <input
+//     type="textbox"
+//     data-emoji-input="unicode"
+//     class="form-control"
+//     id="message-text"
+//     placeholder="Input field"
+// ></input>;
+
+
+// <script>
+//     $(function () {
+//         // Initializes and creates emoji set from sprite sheet
+//         window.emojiPicker = new EmojiPicker({
+//             emojiable_selector: '[data-emojiable=true]',
+//             assetsPath: '/emojipicker/lib/img/',
+//             popupButtonClasses: 'fa fa-smile-o'
+//         });
+//         // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+//         // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+//         // It can be called as many times as necessary; previously converted input fields will not be converted again
+//         window.emojiPicker.discover();
+//     });
+// </script>

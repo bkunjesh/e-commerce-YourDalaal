@@ -364,6 +364,26 @@ body {
     border-radius: 6px;
     font-size: 0.8rem;
 }
+/* #message-text{
+    flex: 1 0 0;
+    outline: none;
+    padding: 15px;
+    border: 2px solid #ddd;
+    color: #330;
+    border-radius: 6px;
+    font-size: 0.8rem;
+} */
+#input-container{
+    flex: 1 0 0;
+    outline: none;
+    padding: 1px;
+    margin:2px;
+    border: 2px solid #ddd;
+    color: #330;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
 
 ::-webkit-scrollbar {
     display: none;
