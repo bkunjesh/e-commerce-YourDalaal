@@ -20,10 +20,10 @@ if (send_message) {
 
     input.addEventListener("keyup", (e) => {
         if (e.ctrlKey && e.keyCode === 13) {
-            console.log("ctrl+enter");
+            // console.log("ctrl+enter");
             e.preventDefault();
             var send_message = document.querySelector(`#send_message`);
-            console.log(send_message);
+            // console.log(send_message);
             
             send_message.click();
         }
@@ -165,9 +165,11 @@ function checkForLatestDateUpdate(message_date) {
         "#chat-message-list-date"
     );
     if (chat_message_list_date) {
-        var lastChatDate =
-            chat_message_list_date[chat_message_list_date.length - 1]
-                .childNodes[1];
+        if (chat_message_list_date.length > 0)
+            var lastChatDate =
+                chat_message_list_date[chat_message_list_date.length - 1]
+                    .childNodes[1];
+        else lastChatDate = '';
     }
     if (!chat_message_list_date || lastChatDate.innerText != message_date) {
         chat_message_list.innerHTML += `
