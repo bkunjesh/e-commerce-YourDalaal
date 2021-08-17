@@ -119,7 +119,7 @@ getUpdatedDate = (date) => {
         date = "";
         return { date, time };
     }
-    var time = getTime(date);
+    time = getTime(date);
     date = isoFormatDMY(date);
     return { date, time };
 }

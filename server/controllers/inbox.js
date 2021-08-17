@@ -124,7 +124,7 @@ module.exports.renderInboxWithChat = async (req, res) => {
 
 module.exports.sendMessage = async (req, res) => {
     const { message_text, receiverID, chatID } = req.body;
-    let Curdate = new Date();
+    let Curdate = new Date().toLocaleString('en-US');
     const msg = {
         body: message_text,
         sender: req.user._id,
@@ -132,10 +132,12 @@ module.exports.sendMessage = async (req, res) => {
         isRead: 0,
     };
 
+    //strore message to db
     let chat = await Chat.findById(chatID);
     chat.messages.push(msg);
     await chat.save();
 
+    //send realtime message to recevier
     let profileImage = req.user.profileImage.url
         ? req.user.profileImage.url
         : "https:img.icons8.com/metro/26/000000/user-male.png";
@@ -154,4 +156,5 @@ module.exports.sendMessage = async (req, res) => {
     };
     req.io.sockets.in(receiverID).emit("message", message);
     res.send(message);
+    // res.sendStatus(202);
 };

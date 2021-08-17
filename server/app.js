@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 const path = require('path');
 const methodOverride = require('method-override');
 const Product = require('./models/Product')
-const ejsMate = require('ejs-mate')
+const ejsMate = require('ejs-mate') //embeddable templates
 const catchAsync=require('./utilities/catchAsync')
 const ExpressError = require('./utilities/ExpressError')
 const flash = require('connect-flash');
@@ -20,7 +20,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const Chat = require("./models/chat");
 const { isLoggedIn, isAuthor } = require('./middleware/middleware');
-const { readAcknowledge } = require('./middleware/inbox');
+// const { readAcknowledge } = require('./middleware/inbox');
 // const { MongoStore } = require('connect-mongo');
 const port = process.env.PORT || 3000;
 
@@ -91,15 +91,15 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
 }
-app.use(session(sessionConfig))
+app.use(session(sessionConfig))  //initialize session in req.
 app.use(flash())
 
-app.use(passport.initialize()); 
+app.use(passport.initialize()); // req.session.passport
 app.use(passport.session()); //this  should be come after session
 
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(User.serializeUser()); // req.session.passport.userid=id
+passport.deserializeUser(User.deserializeUser()); //find user with id and store it in req.user
 
 var connecteduser = {};
 
@@ -137,11 +137,13 @@ io.on('connection', (socket) => {
     })
 
     // socket.on("readAcknowledge", readAcknowledge);
+
     socket.on("readAcknowledge", async (readAcknowledge) => {
         var chat = await Chat.findById({ _id: readAcknowledge.chatID });
-        chat.messages[chat.messages.length - 1].isRead = 1;
+        if (chat.messages.length>0)
+            chat.messages[chat.messages.length - 1].isRead = 1;
         await chat.save();
-        io.sockets.in(readAcknowledge.receiverID).emit("readAcknowledge", {message_id:readAcknowledge.message_id});
+        io.sockets.in(readAcknowledge.receiverID).emit("readAcknowledge", {message_id:chat.messages[chat.messages.length - 1]._id});
         return;
     });
 });

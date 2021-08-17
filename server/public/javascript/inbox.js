@@ -7,8 +7,8 @@ const send_message = document.querySelector("#send_message");
 const chatID = document.querySelector("#chatID").value;
 const userID = document.querySelector("#userID").value;
 
-showActiveChat();
 connectSocket();
+showActiveChat();
 function connectSocket() {
     socket.emit("join", { id: userID });
 }
@@ -65,20 +65,22 @@ if (send_message) {
                     checkForLatestDateUpdate(date);
 
                     chat_message_list.innerHTML += `
-                <div class="message-row you-message" data-message-id="${message_id}">
-                    <div class="message-content">
-                        <div class="message-text">${message_text}</div>
-                        <div class="message-status">
-                                <div class="message-time">${time}</div>
-                                <div class="read-reciept"></div>
-                        </div>
-                    </div>
-                </div>    
-            `;
-            scrollDown();
-            // document.querySelector("#message-text").innerText = "";
-            document.querySelector("#message-text").value = "";
+                        <div class="message-row you-message" data-message-id="${message_id}">
+                            <div class="message-content">
+                                <div class="message-text">${message_text}</div>
+                                <div class="message-status">
+                                        <div class="message-time">${time}</div>
+                                        <div class="read-reciept"></div>
+                                </div>
+                            </div>
+                        </div>    
+                    `;
+                    scrollDown();
+                    // document.querySelector("#message-text").innerText = "";
+                    document.querySelector("#message-text").value = "";
 
+                    //updating recent message in conversation list
+                            
                     conversations = document.querySelectorAll(".conversation");
                     var node;
                     conversations.forEach((element) => {
@@ -106,13 +108,8 @@ if (send_message) {
 // let input = document.querySelector(`[data-type]`);
 // console.log(input);
 socket.on("message", function (data) {
-    if (receiverID === data.senderId.toString()) {
-        readAcknowledge = {
-            chatID: chatID,
-            message_id: data.message_id,
-            receiverID: receiverID,
-        };
-        socket.emit("readAcknowledge", readAcknowledge);
+    //update chatlist 
+    if (receiverID === data.senderId.toString()) {    
 
         checkForLatestDateUpdate(data.message_date);
 
@@ -127,16 +124,28 @@ socket.on("message", function (data) {
                 </div>
             </div>  
         `;
+
+        readAcknowledge = {
+            chatID: chatID,
+            message_id: data.message_id,
+            receiverID: receiverID,
+        };
+        
+        socket.emit("readAcknowledge", readAcknowledge);
     }
+    //update conversation list
     messageArrived(data);
 
     scrollDown();
 });
 
+//readAcknowledge for live users
 socket.on("readAcknowledge", (data) => {
     let messages = document.querySelectorAll(`[data-message-id]`);
+    
     messages.forEach((message) => {
-        if (message.dataset.messageId == data.message_id) {
+        
+        if (message.dataset.messageId.toString() == data.message_id.toString()) {
             let readReceipt = message
                 .querySelector(".message-content")
                 .querySelector(".message-status")
@@ -148,6 +157,9 @@ socket.on("readAcknowledge", (data) => {
         }
     });
 });
+//readAcknowledge for all unread previous message when recevier opened chat
+//here we can get one by one readAcknowledgement for all unread message but it's costly operation that's why implemented 
+//as one readAcknowledge for all unread message
 socket.on("readAllAcknowledge", (data) => {
     if (chatID == data.chatID) {
         readReceipts = document.querySelectorAll(".read-reciept");
@@ -183,6 +195,7 @@ function checkForLatestDateUpdate(message_date) {
 }
 
 function messageArrived(data) {
+    //finding node in conversation list for updation + reordering
     conversations = document.querySelectorAll(".conversation");
     var node;
     conversations.forEach((element) => {
@@ -222,6 +235,7 @@ function messageArrived(data) {
 }
 
 function updateConversationList(node) {
+    //reordering the conversation list
     if (node) {
         node = node.parentNode;
         parent = node.parentNode;
